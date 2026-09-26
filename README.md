@@ -6,6 +6,8 @@ Status: thaw, drift and gossip are in. Shared history and favors are planned; se
 
 ## How the base game does it
 
+(dataterminals note: Rachel is the player character for the save/world that this mod is built of)
+
 Each character keeps one relationship per person they know. It's one-way: Rachel's view of Isabel and Isabel's view of Rachel are separate. A relationship holds a tally with one entry per social stat. After every exchange, `Relationship.StoreIAConds` adds half of what the exchange did to each stat. The entry goes negative when the other person eased that stat (kind) and positive when they worsened it (hostile).
 
 The game reads the tally like this:
