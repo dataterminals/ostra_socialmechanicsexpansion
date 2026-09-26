@@ -11,7 +11,7 @@ namespace SocialMechanicsExpansion
     {
         public const string Guid = "com.sylvia.socialmechanicsexpansion";
         public const string Name = "Social Mechanics Expansion";
-        public const string Version = "0.1.0";
+        public const string Version = "0.2.0";
 
         internal static ManualLogSource Log;
 
@@ -51,11 +51,15 @@ namespace SocialMechanicsExpansion
 
             Settings.GossipOn = Config.Bind("Gossip", "Enabled", true,
                 "Friends pass on how they feel about other people, so opinions (and reputations) travel.");
-            Settings.GossipChance = Config.Bind("Gossip", "Chance", 0.25f,
-                new ConfigDescription("Chance, once per pair per cooldown, that a friend passes on an opinion while talking.",
+            Settings.GossipChance = Config.Bind("Gossip", "BaseChance", 0.35f,
+                new ConfigDescription(
+                    "Chance, once per pair per cooldown, that someone brings up a person they have feelings about. Lukewarm "
+                    + "opinions come up half as often as strong ones, and with Personality on, Gregarious people 1.5x and Shy 0.5x.",
                     new AcceptableValueRange<float>(0f, 1f)));
-            Settings.GossipShare = Config.Bind("Gossip", "Share", 0.10f,
-                new ConfigDescription("How much of the speaker's feeling about someone rubs off on the listener.",
+            Settings.GossipShare = Config.Bind("Gossip", "MaxShare", 0.20f,
+                new ConfigDescription(
+                    "The most of the speaker's feeling a rumor can carry. It's scaled by how much the listener trusts the speaker, "
+                    + "how little they know the subject firsthand, and (with Personality on) how credible the speaker is.",
                     new AcceptableValueRange<float>(0f, 1f)));
             Settings.GossipCap = Config.Bind("Gossip", "Cap", 10f,
                 new ConfigDescription("Most one rumor can move the listener's familiarity with its subject.",
@@ -63,10 +67,20 @@ namespace SocialMechanicsExpansion
             Settings.GossipCooldownHours = Config.Bind("Gossip", "CooldownHours", 24f,
                 new ConfigDescription("Game hours between one pair's chances to gossip.",
                     new AcceptableValueRange<float>(0f, 1000f)));
+            Settings.GossipPushBack = Config.Bind("Gossip", "PushBack", true,
+                "A listener who knows the subject firsthand and feels the other way argues instead of agreeing: they don't "
+                + "budge, and the speaker's own view softens a little.");
             Settings.GossipReachesPlayer = Config.Bind("Gossip", "ReachesPlayer", false,
                 "Off: gossip never changes how the player character feels about anyone. On: it can, like anyone else.");
             Settings.GossipLog = Config.Bind("Gossip", "LogAboutPlayer", true,
                 "Tell the player when someone in their room passes on an opinion about them.");
+
+            Settings.PersonalityOn = Config.Bind("Personality", "Enabled", true,
+                "Traits shape the rules. Gossip: Gregarious people bring others up more and Shy ones less; Charismatic "
+                + "speakers are believed more, and so are Honest ones once the listener knows it; a known Liar is believed "
+                + "less; Liars and Treacherous people exaggerate; Observant listeners doubt hearsay and Obtuse ones swallow "
+                + "it; a Loyal listener thinks less of anyone who runs down their friends. Drift: Forgiving people's grudges "
+                + "fade twice as fast.");
 
             new Harmony(Guid).PatchAll(typeof(Plugin).Assembly);
             Log.LogInfo($"{Name} {Version} loaded");
@@ -107,7 +121,10 @@ namespace SocialMechanicsExpansion
         internal static ConfigEntry<float> GossipShare;
         internal static ConfigEntry<float> GossipCap;
         internal static ConfigEntry<float> GossipCooldownHours;
+        internal static ConfigEntry<bool> GossipPushBack;
         internal static ConfigEntry<bool> GossipReachesPlayer;
         internal static ConfigEntry<bool> GossipLog;
+
+        internal static ConfigEntry<bool> PersonalityOn;
     }
 }

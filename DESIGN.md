@@ -1,6 +1,6 @@
 # Social Mechanics Expansion: design
 
-Status (0.1.0): Thaw, Drift and Gossip are built; Shared History and Favors are not yet.
+Status (0.2.0): Thaw, Drift and Gossip are built, with gossip reworked into trust, experience, credibility and reactions (see the README). Shared History and Favors are not yet built. Thaw was verified in game on 2026-09-26: Isabel went from enemy to friend, Rachel made peace, and the game's own friend lines unlocked.
 
 One BepInEx plugin, five features, each switchable in the config. Like Romantic
 Flexibility, everything builds on the tally the game already keeps and never uses.

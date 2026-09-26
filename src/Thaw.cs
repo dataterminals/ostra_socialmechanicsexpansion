@@ -19,6 +19,9 @@ namespace SocialMechanicsExpansion
     {
         private const double GameVerdictShare = 0.55;
 
+        /// <summary>Familiarity at which friend or enemy is decided under these rules (the game's is 200). For tools.</summary>
+        public static double VerdictAt => Settings.ThawOn != null && Settings.ThawOn.Value ? Settings.VerdictAt.Value : 200.0;
+
         /// <summary>What the next exchange would do to this label under these rules, or null. For tools such as OstraScope.</summary>
         public static string Next(Relationship r) => Decide(r).describe;
 

@@ -15,5 +15,7 @@ namespace SocialMechanicsExpansion
         public static string TalkedAboutYou(string speaker, string listener, bool kindly) =>
             kindly ? $"{speaker} speaks well of you to {listener}." : $"{speaker} runs you down to {listener}.";
         public static string ToldYouAbout(string speaker, string subject) => $"{speaker} tells you about {subject}.";
+        public static string StoodUpForYou(string listener, string speaker, bool speakerWasKind) =>
+            speakerWasKind ? $"{listener} isn't convinced when {speaker} speaks well of you." : $"{listener} sticks up for you to {speaker}.";
     }
 }

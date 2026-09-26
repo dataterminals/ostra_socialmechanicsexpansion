@@ -8,7 +8,8 @@ namespace SocialMechanicsExpansion
     /// Time apart fades feelings. About once a game hour, every loaded person's tallies ease
     /// toward neutral: the hostile entries with a half-life of HostileHalfLifeDays, the kind ones
     /// with KindHalfLifeDays, so grudges cool sooner than friendships do. Two people in the
-    /// same room don't drift apart while they're there.
+    /// same room don't drift apart while they're there. With Personality on, a Forgiving person's
+    /// grudges fade twice as fast.
     ///
     /// Only the tally moves; labels wait for the next real exchange, where the game (and Thaw)
     /// re-read it. An NPC's feelings only drift while they're loaded, which is whenever the
@@ -47,10 +48,13 @@ namespace SocialMechanicsExpansion
 
         private static void Apply(double seconds)
         {
-            double hostile = Factor(seconds, Settings.HostileHalfLifeDays.Value);
+            double hostileNormal = Factor(seconds, Settings.HostileHalfLifeDays.Value);
+            double hostileForgiving = Factor(seconds, Settings.HostileHalfLifeDays.Value / 2);
             double kind = Factor(seconds, Settings.KindHalfLifeDays.Value);
+            bool personality = Settings.PersonalityOn != null && Settings.PersonalityOn.Value;
             foreach (CondOwner co in People())
             {
+                double hostile = personality && co.HasCond("IsForgiving") ? hostileForgiving : hostileNormal;
                 foreach (Relationship r in co.socUs.GetAllPeople())
                 {
                     if (r?.pspec == null) continue;
