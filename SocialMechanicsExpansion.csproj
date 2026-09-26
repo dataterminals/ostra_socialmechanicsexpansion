@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>SocialMechanicsExpansion</AssemblyName>
+    <RootNamespace>SocialMechanicsExpansion</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <CodePage>65001</CodePage>
+    <Nullable>disable</Nullable>
+    <Version>0.1.0</Version>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+
+    <!-- Override with: dotnet build -p:GameDir="E:\path\to\Ostranauts" -->
+    <GameDir Condition="'$(GameDir)' == ''">D:\SteamLibrary\steamapps\common\Ostranauts</GameDir>
+    <ManagedDir>$(GameDir)\Ostranauts_Data\Managed</ManagedDir>
+    <BepInExDir>$(GameDir)\BepInEx</BepInExDir>
+
+    <!-- Copy the built DLL into the game's plugins folder: dotnet build -p:Deploy=true -->
+    <Deploy Condition="'$(Deploy)' == ''">false</Deploy>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="BepInEx" HintPath="$(BepInExDir)\core\BepInEx.dll" Private="false" />
+    <Reference Include="0Harmony" HintPath="$(BepInExDir)\core\0Harmony.dll" Private="false" />
+    <Reference Include="Assembly-CSharp" HintPath="$(ManagedDir)\Assembly-CSharp.dll" Private="false" />
+    <Reference Include="UnityEngine" HintPath="$(ManagedDir)\UnityEngine.dll" Private="false" />
+    <Reference Include="UnityEngine.CoreModule" HintPath="$(ManagedDir)\UnityEngine.CoreModule.dll" Private="false" />
+  </ItemGroup>
+
+  <Target Name="DeployToGame" AfterTargets="Build" Condition="'$(Deploy)' == 'true'">
+    <MakeDir Directories="$(BepInExDir)\plugins\SocialMechanicsExpansion" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(BepInExDir)\plugins\SocialMechanicsExpansion" />
+    <Message Importance="high" Text="SocialMechanicsExpansion deployed to $(BepInExDir)\plugins\SocialMechanicsExpansion" />
+  </Target>
+
+</Project>
