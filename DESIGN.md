@@ -92,6 +92,11 @@ Needs writing: the label names and the reminisce lines (two or three per label).
 
 ## 5. Favors: friends are worth something
 
+- **The game already does some of this.** Becoming Isabel's friend started the base game's
+  *Family Issues* messenger plot (`MessengerFamily`, contact spec `Messenger_Contact`): she asks
+  the player to smooth over a family rift with a relative, with an optional paid turn-in, and it
+  repeats. Favors should work with plots like this, e.g. making them likelier or better-paid from
+  close friends, rather than only through gigs.
 - **Friend clients:** while `MakeJob` is picking a client, `FavorChance` (default 0.5) that a
   loaded friend who fits the job's client spec gets it instead of a random stranger.
 - **Friend rate:** jobs from friends pay `FriendBonus` more (default +15%). Enemies aren't
